@@ -11,49 +11,26 @@ def get_indices_of_item_weights(weights, length, limit):
     """
     YOUR CODE HERE
     """
-    
-    for w in weights:
-        if hash_table_retrieve(ht, w) is None:
-            hash_table_insert(ht, w, 1)
-        else:
-            # counting duplicate as value
-            value = hash_table_retrieve(ht, w)
-            hash_table_insert(ht, w, value+1)
+    # duplicate will be overwritten with latest index
+    for i in range(len(weights)):
+        hash_table_insert(ht, weights[i], i)
+
+
+    # for w in weights:
+    #     print(f' ht: {hash_table_retrieve(ht,w)}')
+
 
     for i in range(len(weights)):
         target = limit - weights[i]
+        if hash_table_retrieve(ht, target) is not None:
+            target_index = hash_table_retrieve(ht, target)
 
-        if target in weights:
-            answer=(None, None)
-            j = i
+            if target_index > i:
+                answer = (str(target_index), str(i))
+            else:
+                answer = (str(i), str(target_index))
+            return answer
 
-            # find next target that is the same current weight
-            if (target == weights[i] and 
-                hash_table_retrieve(ht, weights[i]) > 1):
-                j = i+1
- 
-            # find target index in weights
-            while j< length and target != weights[j]:
-                j += 1
-            
-            if j > length: 
-                # target == weights[j]
-                if weights[i] > weights[j]:
-                    answer = (str(i), str(j))
-                else:
-                    answer = (str(j), str(i))
-                return(answer)
-
-        # if hash_table_retrieve(ht, target) is not None:
-        #     target_value = hash_table_retrieve(ht, target)
-        #     if target_value > weights[i]:
-        #         answer = (str(target_value), str(weights[i]))
-        #     else:
-        #         answer = (str(weights[i]), str(target_value))
-        # return(answer)
-                
-
-    
     return None
 
 
@@ -63,6 +40,7 @@ def print_answer(answer):
     else:
         print("None")
 
-# weights_2 = [4, 4]
-# answer_2 = get_indices_of_item_weights(weights_2, 2, 8)
-# print(f' answer2 is {answer_2[0]} {answer_2[1]}')
+weights_2 = [4, 4]
+answer_2 = get_indices_of_item_weights(weights_2, 2, 8)
+print_answer(answer_2)
+
