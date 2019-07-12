@@ -22,14 +22,17 @@ def proof_of_work(last_proof):
     start = timer()
 
     print("Searching for next proof")
-    proof = 0
+    proof = 3333999999
     #  TODO: Your code here
+    
+    while valid_proof(last_proof, proof) is False:
+        proof += 1
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
 
 
-def valid_proof(last_hash, proof):
+def valid_proof(last_proof, proof):
     """
     Validates the Proof:  Multi-ouroborus:  Do the last six characters of
     the last hash match the first six characters of the proof?
@@ -38,7 +41,13 @@ def valid_proof(last_hash, proof):
     """
 
     # TODO: Your code here!
-    pass
+    last_hash = hashlib.sha256(str(last_proof).encode()).hexdigest()[-6:]
+    first_hash = hashlib.sha256(str(proof).encode()).hexdigest()[:6]
+    
+    # guess = f'{last_hash}{proof}'.encode()
+    # guess_hash = hashlib.sha256(guess).hexdigest()
+    return last_hash == first_hash
+
 
 
 if __name__ == '__main__':
